@@ -23,7 +23,7 @@ O **Sistema de Controle de Séries** é uma aplicação web desenvolvida com **P
 - **Middleware de Autenticação**: O sistema utiliza um middleware para garantir que apenas usuários autenticados possam acessar determinadas rotas, como a criação, edição e remoção de séries, temporadas e episódios.
 - **Mensagens, Validações e Feedbacks ao Usuário**: Após ações como a criação, edição ou exclusão de uma série, temporada ou episódio, o sistema exibe uma mensagem de sucesso ou erro ao usuário. Essas mensagens são passadas através da sessão e aparecem na tela como notificações. Além disso, o sistema valida as regras de validação, caso não cumpra com os requisitos retorna uma mensagem de erro.
 - **Armazenamento de Imagens**: Ao cadastrar ou editar uma série, o administrador pode carregar uma imagem para ser usada como capa da série. O Laravel gerencia o armazenamento de arquivos, e as imagens são armazenadas no diretório de armazenamento público. Caso o administrador não forneça uma imagem de capa, o sistema exibe uma imagem padrão para representar a série.
-- **Eventos, Listeners, Jobs e Filas**:Quando uma nova série é criada, um evento é disparado. Esse evento contém informações sobre a série, como nome, ID, quantidade de temporadas e episódios por temporada.
+- **Eventos, Listeners, Jobs e Filas**: Quando uma nova série é criada, um evento é disparado. Esse evento contém informações sobre a série, como nome, ID, quantidade de temporadas e episódios por temporada.
 
 ## Requisitos
 
