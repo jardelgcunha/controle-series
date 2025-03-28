@@ -1,66 +1,140 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Controle de Séries
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+O **Sistema de Controle de Séries** é uma aplicação web desenvolvida com **PHP 8.2.3** e framework **Laravel 12**, que permite ao usuário gerenciar séries, temporadas e episódios. O sistema oferece funcionalidades como cadastro, edição, remoção e listagem de séries, com um fluxo de autenticação de usuário, além de envio de emails para os usuários sobre séries recém-criadas. O banco de dados utilizado é o **SQLite**.
 
-## About Laravel
+## Tecnologias Utilizadas
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **PHP 8.2.3**
+- **Laravel 12**
+- **Blade**, **Bootstrap**, **HTML**, **CSS** e **Javascript** para a interface
+- **SQLite** para o banco de dados
+- **Mailtrap** para o disparo de emails SMTP
+- **Storage** para o armazenamento de imagens
+- **Autenticação**, **Validações**, **Eventos**, **Jobs**, **Listeners** e **Middlewares**
+- **Fila de Processamento** para o envio de múltiplos emails
+- **Injeção de Dependência** e **Transações** para otimização da aplicação
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Funcionalidades
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Gestão de Usuários**: Usuários podem se registrar no sistema, fazer login e logout.
+- **Gestão de Séries**: Cadastrar uma série com temporadas, episódios e capa (imagem), editar nome da série e capa (imagem), exibir e remover séries.
+- **Gestão de Temporadas e Episódios**: Visualização de temporadas e episódios, além de marcação e visualização de episódios como assistidos.
+- **Envio de Email**: Disparo de um email para todos os usuários quando uma nova série é criada e registro no log. O envio de emails para os usuários é processado em segundo plano utilizando Jobs e Filas para garantir que o envio de múltiplos emails não sobrecarregue o servidor no envio assíncrono de emails.
+- **Middleware de Autenticação**: O sistema utiliza um middleware para garantir que apenas usuários autenticados possam acessar determinadas rotas, como a criação, edição e remoção de séries, temporadas e episódios.
+- **Mensagens, Validações e Feedbacks ao Usuário**: Após ações como a criação, edição ou exclusão de uma série, temporada ou episódio, o sistema exibe uma mensagem de sucesso ou erro ao usuário. Essas mensagens são passadas através da sessão e aparecem na tela como notificações. Além disso, o sistema valida as regras de validação, caso não cumpra com os requisitos retorna uma mensagem de erro.
+- **Armazenamento de Imagens**: Ao cadastrar ou editar uma série, o administrador pode carregar uma imagem para ser usada como capa da série. O Laravel gerencia o armazenamento de arquivos, e as imagens são armazenadas no diretório de armazenamento público. Caso o administrador não forneça uma imagem de capa, o sistema exibe uma imagem padrão para representar a série.
+- **Eventos, Listeners, Jobs e Filas**:Quando uma nova série é criada, um evento é disparado. Esse evento contém informações sobre a série, como nome, ID, quantidade de temporadas e episódios por temporada.
 
-## Learning Laravel
+## Requisitos
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **PHP 8.2.3**
+- **Composer** para gerenciar as dependências do Laravel
+- **SQLite** para o banco de dados
+- **Mailtrap** para configuração do envio de emails
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Estrutura de Diretórios
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+A estrutura de diretórios do projeto segue o padrão do Laravel:
 
-## Laravel Sponsors
+```
+/app
+    /Events
+    /Http
+        /Controllers
+        /Middleware
+        /Requests
+    /Jobs
+    /Listeners
+    /Mail
+    /Models
+    /Providers
+    /Repositories
+/config
+/database
+    /factories
+    /migrations
+    /seeders
+/public
+    /storage
+        /series_cover
+/resources
+    /css
+    /jss
+    /sass
+    /views
+/routes
+/storage
+    /app
+        /private
+        /public
+    /debugbar
+    /framework
+    /logs
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## Rotas e Controle de Acesso
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### **Rotas Principais**
 
-## Contributing
+| Método | Rota | Ação | Controle |
+|--------|------|------|----------|
+| `GET`  | `/login` | Exibe o formulário de login | `LoginController@index` |
+| `POST` | `/login` | Realiza o login | `LoginController@store` |
+| `GET`  | `/logout` | Realiza o logout | `LoginController@destroy` |
+| `GET`  | `/register` | Exibe o formulário de registro | `UsersController@create` |
+| `POST` | `/register` | Registra o novo usuário | `UsersController@store` |
+| `GET`  | `/series` | Exibe a lista de séries | `SeriesController@index` |
+| `GET`  | `/series/create` | Exibe o formulário de criação de série | `SeriesController@create` |
+| `POST` | `/series` | Cria uma nova série | `SeriesController@store` |
+| `GET`  | `/series/{series}/edit` | Exibe o formulário de edição de série | `SeriesController@edit` |
+| `PUT`  | `/series/{series}` | Atualiza uma série existente | `SeriesController@update` |
+| `DELETE` | `/series/{series}` | Remove uma série | `SeriesController@destroy` |
+| `GET`  | `/series/{series}/seasons` | Exibe as temporadas de uma série | `SeasonsController@index` |
+| `GET`  | `/seasons/{season}/episodes` | Exibe os episódios de uma temporada | `EpisodesController@index` |
+| `POST` | `/seasons/{season}/episodes` | Marca episódios como assistidos | `EpisodesController@update` |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Configuração
 
-## Code of Conduct
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/seu-usuario/controle-series.git
+   cd controle-series
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2. Instale as dependências com o Composer:
+   ```bash
+   composer install
+   ```
 
-## Security Vulnerabilities
+3. Configure o banco de dados SQLite no arquivo `.env`:
+   ```bash
+   DB_CONNECTION=sqlite
+   DB_DATABASE=/path/to/database/database.sqlite
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+4. Execute as migrations para criar as tabelas no banco de dados:
+   ```bash
+   php artisan migrate
+   ```
 
-## License
+5. Configure o envio de emails no **Mailtrap** e ajuste as configurações no arquivo `.env`.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+6. Inicie o servidor de desenvolvimento:
+   ```bash
+   php artisan serve
+   ```
+
+## Testes
+
+A aplicação já inclui testes básicos para validar o funcionamento das rotas e funcionalidades principais. Para rodar os testes, execute:
+
+```bash
+php artisan test
+```
+
+## Conclusão
+
+O **Sistema de Controle de Séries** é uma aplicação robusta e fácil de usar para gerenciar séries, temporadas e episódios, com suporte para autenticação de usuários, envio de emails assíncronos e muito mais. O sistema é desenvolvido em Laravel, aproveitando ao máximo os recursos do framework para proporcionar uma experiência de usuário fluída e eficiente.
+
