@@ -1,5 +1,9 @@
 <x-layout title="Séries" :mensagem-sucesso="$mensagemSucesso">
-    <ul class="list-group mt-4 {{ auth()->check() ? 'mb-4' : 'mb-5' }}">
+    @auth
+        <a href="{{ route('series.create') }}" class="btn btn-primary mt-3">Adicionar Série</a>
+    @endauth
+
+    <ul class="list-group mt-4 pb-4">
         @foreach($series as $serie)
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div class="d-flex  align-items-center">
@@ -28,8 +32,4 @@
             </li>
         @endforeach
     </ul>
-
-    @auth
-    <a href="{{ route('series.create') }}" class="btn btn-primary mb-4">Adicionar Série</a>
-    @endauth
 </x-layout>
