@@ -2,14 +2,15 @@
 
 namespace App\Http\Requests;
 
+use AllowDynamicProperties;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SeriesFormRequest extends FormRequest
+#[AllowDynamicProperties] class SeriesFormRequest extends FormRequest
 {
     /**
      * @var false|mixed|string
      */
-    public mixed $coverPath;
+    public mixed $coverPath = null;
 
     /**
      * Determine if the user is authorized to make this request.
