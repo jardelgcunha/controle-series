@@ -37,4 +37,3 @@ Route::get('/email', function () {
     );
 });
 
-

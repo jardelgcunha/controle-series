@@ -4,30 +4,34 @@ namespace Tests\Feature;
 
 use App\Http\Requests\SeriesFormRequest;
 use App\Repositories\SeriesRepository;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class SeriesRepositoryTest extends TestCase
 {
-//    use RefreshDatabase;
-
     public function test_series_creation_with_seasons_and_episodes()
     {
-        // Arrange
-        /** @var SeriesRepository $repository */
-        $repository = $this->app->make(SeriesRepository::class);
-        $request = new SeriesFormRequest();
-        $request->name = 'Nome da série';
-        $request->seasonQty = 1;
-        $request->episodesPerSeason = 1;
+        DB::beginTransaction();
 
-        // Act
-        $repository->add($request);
+        try {
+            // Arrange
+            /** @var SeriesRepository $repository */
+            $repository = $this->app->make(SeriesRepository::class);
+            $request = new SeriesFormRequest();
+            $request->name = 'Loki';
+            $request->seasonQty = 2;
+            $request->episodesPerSeason = 10;
 
-        // Assert
-        $this->assertDatabaseHas('series', ['name' => 'Nome da série']);
-        $this->assertDatabaseHas('seasons', ['number' => 1]);
-        $this->assertDatabaseHas('episodes', ['number' => 1]);
+            // Act
+            $repository->add($request);
+
+            // Assert
+            $this->assertDatabaseHas('series', ['name' => 'Loki']);
+            $this->assertDatabaseHas('seasons', ['number' => 2]);
+            $this->assertDatabaseHas('episodes', ['number' => 10]);
+
+        } finally {
+            DB::rollBack();
+        }
     }
 }
