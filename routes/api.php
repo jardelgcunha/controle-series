@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\SeriesController;
 use App\Models\Series;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -8,6 +9,5 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/series', function () {
-    return Series::all();
-});
+
+Route::apiResource('/series', SeriesController::class);

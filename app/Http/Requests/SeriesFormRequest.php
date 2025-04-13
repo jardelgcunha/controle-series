@@ -27,16 +27,17 @@ use Illuminate\Foundation\Http\FormRequest;
      */
     public function rules(): array
     {
-        if ($this->isMethod('post')) {
-            return [
-                'seasonsQty' => ['required', 'integer', 'min:1'],
-                'episodesPerSeason' => ['required', 'integer', 'min:1'],
-            ];
-        }
-        return [
+        $rules = [
             'name' => ['required', 'min:3'],
             'cover' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
+
+        if ($this->isMethod('post') && $this->getContentTypeFormat() === 'form') {
+            $rules['seasonsQty'] = ['required', 'integer', 'min:1'];
+            $rules['episodesPerSeason'] = ['required', 'integer', 'min:1'];
+        }
+
+        return $rules;
     }
 
     public function messages()
