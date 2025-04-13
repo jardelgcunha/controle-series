@@ -3,6 +3,7 @@
     @if($update)
         @method('PUT')
     @endif
+    <input type="hidden" name="update_seasons_episodes" value="false">
     <div class="row">
         <div class="col-5">
             <label for="name" class="form-label">Nome:</label>

@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SeriesFormRequest;
 use App\Models\Series;
 use App\Repositories\SeriesRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class SeriesController extends Controller
 {
@@ -43,5 +45,24 @@ class SeriesController extends Controller
             ->with('seasons')
             ->first();
         return $series;
+    }
+
+    public function update(Series $series, SeriesFormRequest $request)
+    {
+        if ($request->hasFile('cover')) {
+            if ($series->cover) {
+                Storage::disk('public')->delete($series->cover);
+            }
+
+            $coverPath = $request->file('cover')->store('series_cover', 'public');
+            $series->cover = $coverPath;
+        }
+        $series->fill($request->except('cover'))->save();
+
+//        return $series;
+        return response()->json([
+            'message' => "Série '{$series->name}' foi atualizada com sucesso!",
+            'data' => $series
+        ], 200);
     }
 }

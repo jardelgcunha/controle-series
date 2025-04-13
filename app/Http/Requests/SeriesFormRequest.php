@@ -20,12 +20,23 @@ use Illuminate\Foundation\Http\FormRequest;
             'cover' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
 
-        if ($this->isMethod('post') && $this->getContentTypeFormat() === 'form') {
+        if (
+            $this->isMethod('post') &&
+            $this->getContentTypeFormat() === 'form' &&
+            !$this->has('update_seasons_episodes')
+        ) {
             $rules['seasonsQty'] = ['required', 'integer', 'min:1'];
             $rules['episodesPerSeason'] = ['required', 'integer', 'min:1'];
         }
 
         return $rules;
+    }
+
+    public function prepareForValidation()
+    {
+//        dd($this->all());
+//        dd($this->input('name')); // ou $this->input('name')
+//        dd($this->input('_method') === 'PUT');
     }
 
     public function messages()
