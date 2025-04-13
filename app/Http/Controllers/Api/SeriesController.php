@@ -2,49 +2,35 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\SeriesCreated;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\SeriesApiFormRequest;
+use App\Http\Requests\SeriesFormRequest;
 use App\Models\Series;
+use App\Repositories\SeriesRepository;
 use Illuminate\Support\Facades\Log;
 
 class SeriesController extends Controller
 {
+
+    public function __construct(private SeriesRepository $seriesRepository)
+    {
+        parent::__construct();
+    }
+
     public function index()
     {
         return Series::all();
     }
 
-    public function store(SeriesApiFormRequest $request)
+    public function store(SeriesFormRequest $request)
     {
-        $validated = $request->validated();
-        Log::info('Dados validados: ', $validated);
-        Log::info('Cover no request: ' . $request->file('cover')?->getClientOriginalName());
+        $coverPath = $request->hasFile('cover')
+            ? $request->file('cover')->store('series_cover', 'public')
+            : null;
 
-        if ($request->hasFile('cover')) {
-            $coverPath = $request->file('cover')->store('series_cover', 'public');
-            $validated['cover'] = $coverPath;
-        }
-
-        $series = Series::create($validated);
-
-        // Verifica se foi enviado um arquivo no campo 'cover'
-//        $coverPath = $request->hasFile('cover')
-//            ? $request->file('cover')->store('series_cover', 'public') // Armazena a imagem na pasta 'storage/app/public/series_cover'
-//            : null;
-
-        // Adiciona o caminho da capa no request, para que seja salvo na série
-//        $request->merge(['coverPath' => $coverPath]);
-//
-//        // Log para depuração - Verifique se o arquivo foi armazenado corretamente
-//        Log::info('Cover Path: ' . $coverPath);
-//
-//        // Cria a série com os dados validados
-//        $series = Series::create($request->validated());
-//
-//        // Log para depuração - Verifique os dados da série criada
-//        Log::info('Serie Criada: ', $series->toArray());
-
-        // Retorna a resposta com a série criada
+        $request->coverPath = $coverPath;
+        $series = $this->seriesRepository->add($request);
+        
         return response()->json([
             'message' => "Série '{$series->name}' foi cadastrada com sucesso!",
             'data' => $series
