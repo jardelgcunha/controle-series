@@ -30,10 +30,18 @@ class SeriesController extends Controller
 
         $request->coverPath = $coverPath;
         $series = $this->seriesRepository->add($request);
-        
+
         return response()->json([
             'message' => "Série '{$series->name}' foi cadastrada com sucesso!",
             'data' => $series
         ], 201);
+    }
+
+    public function show(int $series)
+    {
+        $series = Series::whereId($series)
+            ->with('seasons')
+            ->first();
+        return $series;
     }
 }
