@@ -8,6 +8,7 @@ use App\Http\Requests\SeriesFormRequest;
 use App\Models\Series;
 use App\Repositories\SeriesRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -63,6 +64,14 @@ class SeriesController extends Controller
         return response()->json([
             'message' => "Série '{$series->name}' foi atualizada com sucesso!",
             'data' => $series
+        ], 200);
+    }
+
+    public function destroy(int $series)
+    {
+        Series::destroy($series);
+        return response()->json([
+            'message' => "A série foi removida com sucesso!",
         ], 200);
     }
 }
