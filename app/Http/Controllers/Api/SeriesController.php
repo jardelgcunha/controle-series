@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\SeriesCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SeriesFormRequest;
 use App\Models\Series;
 use App\Repositories\SeriesRepository;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class SeriesController extends Controller
@@ -42,9 +38,10 @@ class SeriesController extends Controller
 
     public function show(int $series)
     {
-        $series = Series::whereId($series)
-            ->with('seasons')
-            ->first();
+        $series = Series::find($series);
+        if ($series === null) {
+            return response()->json(['message' => 'Series not found'], 404);
+        }
         return $series;
     }
 
@@ -73,5 +70,10 @@ class SeriesController extends Controller
         return response()->json([
             'message' => "A série foi removida com sucesso!",
         ], 200);
+    }
+
+    public function getEpisodes(Series $series)
+    {
+        return $series->episodes;
     }
 }

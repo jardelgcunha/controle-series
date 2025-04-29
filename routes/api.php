@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\SeasonsController;
 use App\Http\Controllers\Api\SeriesController;
-use App\Models\Series;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -11,3 +11,7 @@ Route::get('/user', function (Request $request) {
 
 
 Route::apiResource('/series', SeriesController::class);
+
+Route::get('/series/{series}/seasons', [SeasonsController::class, 'show']);
+
+Route::get('/series/{series}/episodes', [SeriesController::class, 'getEpisodes']);

@@ -4,12 +4,15 @@
         <ul class="list-group mt-4 mb-4">
             @foreach($episodes as $episode)
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Episódio: {{ $episode->number }}
+                    <label for="checkbox{{ $episode->number }}" id="checkbox">
+                        Episódio: {{ $episode->number }}
+                    </label>
 
                     <input
                         type="checkbox"
                         name="episodes[]"
                         class="checkbox-item"
+                        id="checkbox{{ $episode->number }}"
                         value="{{ $episode->id }}"
                         @if($episode->watched) checked @endif
                     />
