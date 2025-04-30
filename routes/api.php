@@ -20,6 +20,6 @@ Route::get('/series/{series}/episodes', [SeriesController::class, 'getEpisodes']
 Route::patch('/episodes/{episode}', function (Episode $episode, Request $request) {
     $episode->watched = $request->watched;
     $episode->save();
-    
+
     return $episode;
 });
