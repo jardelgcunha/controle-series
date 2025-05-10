@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SeriesFormRequest;
 use App\Models\Series;
 use App\Repositories\SeriesRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class SeriesController extends Controller
@@ -16,9 +17,13 @@ class SeriesController extends Controller
         parent::__construct();
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Series::all();
+        if (!$request->has('name')) {
+            return Series::all();
+        }
+
+        return Series::whereName($request->name)->get();
     }
 
     public function store(SeriesFormRequest $request)
